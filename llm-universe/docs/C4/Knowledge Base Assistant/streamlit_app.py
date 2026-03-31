@@ -7,7 +7,12 @@ from langchain_core.runnables import RunnableBranch, RunnablePassthrough
 import sys 
 from zhipuai_embedding import ZhipuAIEmbeddings
 from langchain_community.vectorstores import Chroma
+from dotenv import load_dotenv, find_dotenv
 
+_ = load_dotenv(find_dotenv())  
+zhipuai_api_key = os.environ.get('ZHIPUAI_API_KEY')
+if not zhipuai_api_key:
+    raise ValueError("请在 .env 文件中设置 ZHIPUAI_API_KEY")
 
 #定义get_retriever函数，该函数返回一个检索器
 def get_retriever():
@@ -115,3 +120,6 @@ def main():
             output = st.write_stream(answer)
         # 将输出存入st.session_state.messages
         st.session_state.messages.append(("ai", output))
+
+if __name__ == "__main__":
+    main()
